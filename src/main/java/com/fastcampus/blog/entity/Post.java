@@ -12,4 +12,10 @@ public class Post {
     private boolean isDeleted;
     private Integer createdAt;
     private Integer publishedAt;
+
+    public Post (Integer id, String title, String slug) {
+        this.id = id;
+        this.title = title;
+        this.slug = slug;
+    }
 }
