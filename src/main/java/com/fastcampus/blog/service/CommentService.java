@@ -1,23 +1,53 @@
 package com.fastcampus.blog.service;
 
 import com.fastcampus.blog.entity.Comment;
+import com.fastcampus.blog.entity.Post;
+import com.fastcampus.blog.repository.CommentRepository;
+import com.fastcampus.blog.repository.PostRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.Instant;
 
 @Service
 public class CommentService {
+    @Autowired
+    CommentRepository commentRepository;
+
+    @Autowired
+    PostRepository postRepository;
+
     public Iterable<Comment> getComments(String postSlug, Integer page, Integer limit) {
-        List<Comment> commentList = new ArrayList<>();
-        return commentList;
+        Post post = postRepository.findFirstBySlugAndIsDeleted(postSlug, false).orElse(null);
+
+        if (post == null)
+            return null;
+
+        PageRequest pageRequest = PageRequest.of(page, limit);
+        return commentRepository.findByPostId(post.getId(), pageRequest).getContent();
     }
 
     public Comment getComment(Integer id) {
-        return new Comment();
+        return commentRepository.findById(id).orElse(null);
     }
 
+    @Transactional
     public Comment createComment(Comment comment) {
+        Post post = postRepository.findFirstBySlugAndIsDeleted(comment.getPost().getSlug(), false).orElse(null);
+
+        if (post == null)
+            return null;
+
+
+        comment.setCreatedAt(Instant.now().getEpochSecond());
+        comment.getPost().setId(post.getId());
+        comment = commentRepository.save(comment);
+
+        post.setCommentCount(post.getCommentCount() + 1);
+        postRepository.save(post);
+
         return comment;
     }
 }
