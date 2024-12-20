@@ -1,7 +1,10 @@
 package com.fastcampus.blog.controller;
 
 import com.fastcampus.blog.entity.Post;
+import com.fastcampus.blog.request.CreatePostRequest;
+import com.fastcampus.blog.resposne.CreatePostResponse;
 import com.fastcampus.blog.service.PostService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,8 +25,8 @@ public class PostController {
     }
 
     @PostMapping()
-    public Post createPost(@RequestBody Post post) {
-        return postService.createPost(post);
+    public CreatePostResponse createPost(@Valid @RequestBody CreatePostRequest createPostRequest) {
+        return postService.createPost(createPostRequest);
     }
 
     @PutMapping("/{slug}")
