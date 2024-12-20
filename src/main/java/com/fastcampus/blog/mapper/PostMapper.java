@@ -1,9 +1,8 @@
 package com.fastcampus.blog.mapper;
 
 import com.fastcampus.blog.entity.Post;
-import com.fastcampus.blog.request.CreatePostRequest;
-import com.fastcampus.blog.response.CreatePostResponse;
-import com.fastcampus.blog.response.GetPostResponse;
+import com.fastcampus.blog.request.post.CreatePostRequest;
+import com.fastcampus.blog.response.post.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -16,4 +15,10 @@ public interface PostMapper {
     CreatePostResponse mapToCreatePostResponse(Post post);
 
     GetPostResponse mapToGetPostResponse(Post post);
+
+    UpdatePostBySlugResponse mapToUpdatePostBySlugResponse(Post post);
+
+    DeletePostByIdResponse mapToDeletePostByIdResponse(Post post);
+
+    PublishPostResponse mapToPublishPostResponse(Post post);
 }

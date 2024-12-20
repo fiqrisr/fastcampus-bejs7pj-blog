@@ -1,4 +1,4 @@
-package com.fastcampus.blog.response;
+package com.fastcampus.blog.response.post;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,10 +9,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreatePostResponse {
+public class GetPostResponse {
+    private Integer id;
     private String title;
     private String body;
     private String slug;
+    private Long createdAt;
     private Long publishedAt;
     private Long commentCount;
+    private boolean isPublished;
 }

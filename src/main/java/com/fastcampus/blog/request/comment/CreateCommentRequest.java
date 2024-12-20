@@ -1,4 +1,4 @@
-package com.fastcampus.blog.request;
+package com.fastcampus.blog.request.comment;
 
 import com.fastcampus.blog.entity.Post;
 import jakarta.validation.Valid;
