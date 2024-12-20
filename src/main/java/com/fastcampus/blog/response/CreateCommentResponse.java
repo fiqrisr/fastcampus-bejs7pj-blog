@@ -1,5 +1,6 @@
-package com.fastcampus.blog.resposne;
+package com.fastcampus.blog.response;
 
+import com.fastcampus.blog.entity.Post;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,10 +10,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreatePostResponse {
-    private String title;
+public class CreateCommentResponse {
+    private String name;
+    private String email;
     private String body;
-    private String slug;
-    private Long publishedAt;
-    private Long commentCount;
+    private Post post;
 }

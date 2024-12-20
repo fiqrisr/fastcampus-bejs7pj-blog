@@ -2,7 +2,8 @@ package com.fastcampus.blog.controller;
 
 import com.fastcampus.blog.entity.Post;
 import com.fastcampus.blog.request.CreatePostRequest;
-import com.fastcampus.blog.resposne.CreatePostResponse;
+import com.fastcampus.blog.response.CreatePostResponse;
+import com.fastcampus.blog.response.GetPostResponse;
 import com.fastcampus.blog.service.PostService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class PostController {
     }
 
     @GetMapping("/{slug}")
-    public Post getPostBySlug(@PathVariable String slug) {
+    public GetPostResponse getPostBySlug(@PathVariable String slug) {
         return postService.getPostBySlug(slug);
     }
 
