@@ -1,6 +1,7 @@
 package com.fastcampus.blog.service;
 
 import com.fastcampus.blog.properties.SecretProperties;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,5 +37,23 @@ public class JwtService {
     private SecretKey generateKey() {
         byte[] decodeKey = Base64.getDecoder().decode(secretProperties.getJwtSecretKey());
         return Keys.hmacShaKeyFor(decodeKey);
+    }
+
+    private Claims getClaims(String jwt) {
+        return Jwts.parser()
+                .verifyWith(generateKey())
+                .build()
+                .parseSignedClaims(jwt)
+                .getPayload();
+    }
+
+    public String extractUsername(String jwt) {
+        Claims claims = getClaims(jwt);
+        return claims.getSubject();
+    }
+
+    public boolean isExpired(String jwt) {
+        Claims claims = getClaims(jwt);
+        return claims.getExpiration().before(Date.from(Instant.now()));
     }
 }
