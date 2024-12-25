@@ -31,8 +31,9 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         registry -> registry
-                                .requestMatchers("api/login").permitAll()
-                                .anyRequest().authenticated()
+                                .requestMatchers("api/public/**").permitAll()
+                                .requestMatchers("api/admin/**").authenticated()
+                                .anyRequest().permitAll()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

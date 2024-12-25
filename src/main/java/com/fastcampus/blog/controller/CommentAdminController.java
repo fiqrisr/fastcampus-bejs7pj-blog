@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/comments")
-public class CommentController {
+@RequestMapping("/api/admin/comments")
+public class CommentAdminController {
     @Autowired
     CommentService commentService;
 
