@@ -86,4 +86,24 @@ public class CommentPublicControllerTests {
         Assertions.assertThrows(ApiException.class, () -> commentPublicController
                 .getComments("post-1", 0, 10));
     }
+
+    @Test
+    void getComments_givenNoComment_shouldReturnEmptyList() {
+        GetCommentsRequest request = GetCommentsRequest
+                .builder()
+                .page(0)
+                .limit(10)
+                .slug("post-1")
+                .build();
+
+        List<GetCommentResponse> actualCommentResponse = List.of();
+
+        when(commentService.getComments(request)).thenReturn(actualCommentResponse);
+
+        List<GetCommentResponse> commentResponses = commentPublicController
+                .getComments("post-1", 0, 10);
+
+        Assertions.assertNotNull(commentResponses);
+        Assertions.assertEquals(0, commentResponses.size());
+    }
 }

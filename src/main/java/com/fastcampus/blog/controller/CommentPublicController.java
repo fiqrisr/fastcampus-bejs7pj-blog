@@ -7,6 +7,8 @@ import com.fastcampus.blog.response.comment.GetCommentResponse;
 import com.fastcampus.blog.service.CommentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,7 +28,7 @@ public class CommentPublicController {
     }
 
     @PostMapping
-    public CreateCommentResponse createComment(@Valid @RequestBody CreateCommentRequest comment) {
-        return commentService.createComment(comment);
+    public ResponseEntity<CreateCommentResponse> createComment(@Valid @RequestBody CreateCommentRequest comment) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(commentService.createComment(comment));
     }
 }

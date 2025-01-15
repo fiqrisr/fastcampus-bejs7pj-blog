@@ -33,7 +33,7 @@ public class AuthController {
 
         if (authentication.isAuthenticated()) {
             String token = jwtService
-                    .generateToken(myUserDetailsService.loadUserByUsername(loginRequest.getUsername()));
+                    .generateTokenByUsername(myUserDetailsService.loadUserByUsername(loginRequest.getUsername()).getUsername());
 
             return LoginResponse.builder().token(token).build();
         }
