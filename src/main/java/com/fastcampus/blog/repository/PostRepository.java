@@ -1,5 +1,6 @@
 package com.fastcampus.blog.repository;
 
+import com.fastcampus.blog.entity.Category;
 import com.fastcampus.blog.entity.Post;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.repository.CrudRepository;
@@ -17,4 +18,6 @@ public interface PostRepository extends CrudRepository<Post, Integer> {
     List<Post> findByIsDeleted(boolean isDeleted);
 
     List<Post> findByIsDeleted(boolean isDeleted, PageRequest pageRequest);
+
+    Long countByCategory(Category category);
 }
