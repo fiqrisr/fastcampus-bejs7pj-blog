@@ -3,7 +3,6 @@ package com.fastcampus.blog.service;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -41,13 +40,10 @@ public class CategoryService {
     }
 
     public GetCategoryResponse getCategory(Integer id) {
-        Optional<Category> category = categoryRepository.findById(id);
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new ApiException("category not found", HttpStatus.NOT_FOUND));
 
-        if (!category.isPresent()) {
-            throw new ApiException("category not found", HttpStatus.NOT_FOUND);
-        }
-
-        return CategoryMapper.INSTANCE.mapToGetCategoryResponse(category.get());
+        return CategoryMapper.INSTANCE.mapToGetCategoryResponse(category);
     }
 
     public CreateCategoryResponse createCategory(CreateCategoryRequest request) {
@@ -59,31 +55,29 @@ public class CategoryService {
     }
 
     public UpdateCategoryResponse updateCategory(Integer id, UpdateCategoryRequest request) {
-        Optional<Category> category = categoryRepository.findById(id);
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new ApiException("category not found", HttpStatus.NOT_FOUND));
 
-        if (!category.isPresent()) {
-            throw new ApiException("category not found", HttpStatus.NOT_FOUND);
-        }
+        category.setName(request.getName());
+        category.setSlug(request.getSlug());
+        categoryRepository.save(category);
 
-        category.get().setName(request.getName());
-        category.get().setSlug(request.getSlug());
-        categoryRepository.save(category.get());
-
-        return CategoryMapper.INSTANCE.mapToUpdateCategoryResponse(category.get());
+        return CategoryMapper.INSTANCE.mapToUpdateCategoryResponse(category);
     }
 
     public DeleteCategoryResponse deleteCategory(Integer id) {
-        Optional<Category> category = categoryRepository.findById(id);
-        Long postCount = postRepository.countByCategory(category.get());
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new ApiException("category not found", HttpStatus.NOT_FOUND));
+        Long postCount = postRepository.countByCategory(category);
 
         if (postCount != 0) {
             throw new ApiException("post still exists in this category", HttpStatus.BAD_REQUEST);
         }
 
-        category.get().setDeleted(true);
-        categoryRepository.save(category.get());
+        category.setDeleted(true);
+        categoryRepository.save(category);
 
-        return DeleteCategoryResponse.builder().id(id).isDeleted(true).build();
+        return DeleteCategoryResponse.builder().id(category.getId()).isDeleted(true).build();
     }
 
 }
